@@ -1,0 +1,836 @@
+<html>
+	<head>
+		<title>Room</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		<script src="OrbitControls.js"></script>
+		<script>
+			var camera, scene, renderer,controls;
+			var pokoj = new THREE.Group();
+			var lampa = new THREE.Group();
+			var drzwi = new THREE.Group();
+			var lozko = new THREE.Group();
+			var szafa = new THREE.Group();
+			var biurko = new THREE.Group();
+			var fotel = new THREE.Group();
+			var lampka = new THREE.Group();
+			var plant = new THREE.Group();
+			var telewizor = new THREE.Group();
+			var okno = new THREE.Group();
+			var sun = new THREE.Group();
+			var zegar = new THREE.Group();
+			var sekundy = new THREE.Group();
+			var minuty = new THREE.Group();
+			var godziny = new THREE.Group();
+			var mirrorCube, mirrorCubeCamera;
+			var bool = true;
+			var bool2 = true;
+			
+
+ var materialArray = [];
+  materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "rt.png" ),
+   side: THREE.BackSide
+  }));
+    materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "lt.png" ),
+   side: THREE.BackSide
+  }));
+    materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "up.png" ),
+   side: THREE.BackSide
+  }));
+    materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "dn.png" ),
+   side: THREE.BackSide
+  }));
+    materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "bk.png" ),
+   side: THREE.BackSide
+  }));
+    materialArray.push( new THREE.MeshBasicMaterial({
+   map: THREE.ImageUtils.loadTexture( "ft.png" ),
+   side: THREE.BackSide
+  }));
+
+
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.z = 50;
+				camera.position.y = 50;
+				camera.position.x = 50;
+
+				scene = new THREE.Scene();
+var controls = new THREE.OrbitControls( camera );
+controls.update();	
+			
+
+var geometry = new THREE.BoxBufferGeometry( 500, 500, 500);
+var material = new THREE.MeshFaceMaterial( materialArray );
+var box = new THREE.Mesh( geometry, material );
+box.position.set( 0, 0, 0 );
+scene.add( box );
+
+var texture = new THREE.TextureLoader().load( 'podloga.jpg' );
+var geometry = new THREE.PlaneBufferGeometry( 202, 202,32,32 );
+var material = new THREE.MeshStandardMaterial( {map:texture, side: THREE.BackSide, roughness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.x=Math.PI/2;
+plane.position.set(0,-50,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var geometry = new THREE.PlaneBufferGeometry( 202, 202,32,32 );
+var material = new THREE.MeshStandardMaterial( {color:0xffffff, side: THREE.BackSide, roughness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.x=-Math.PI/2;
+plane.position.set(0,50,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+			
+var texture = new THREE.TextureLoader().load( 'tapeta.jpg' );
+var geometry = new THREE.PlaneBufferGeometry( 200, 100,32,32 );
+var material = new THREE.MeshStandardMaterial( {map:texture, side: THREE.FrontSide, roughness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.position.set(0,0,-100);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var geometry = new THREE.PlaneBufferGeometry( 200, 100,32,32 );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=-Math.PI/2;
+plane.position.set(100,0,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var material = new THREE.MeshStandardMaterial( {color:0x224422, side: THREE.BackSide, roughness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.position.set(0,0,100);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var geometry = new THREE.PlaneBufferGeometry( 70, 100,32,32 );
+var material = new THREE.MeshStandardMaterial( {color:0x224422, side: THREE.FrontSide, roughness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=Math.PI/2;
+plane.position.set(-100,0,65);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=Math.PI/2;
+plane.position.set(-100,0,-65);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var geometry = new THREE.PlaneBufferGeometry( 60, 20,32,32 );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=Math.PI/2;
+plane.position.set(-100,40,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+var geometry = new THREE.PlaneBufferGeometry( 60, 40,32,32 );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=Math.PI/2;
+plane.position.set(-100,-30,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add(plane);
+
+//LAMPA
+var geometry = new THREE.CylinderBufferGeometry( 2,10, 10,512,512);
+var material = new THREE.MeshStandardMaterial( { color: 0xefefef/*, side:THREE.DoubleSide, opacity:0.95, transparent: true*/} );
+var lathe = new THREE.Mesh( geometry, material );
+lathe.openEnded=false;
+lampa.add( lathe );
+
+var geometry = new THREE.CylinderBufferGeometry( 0.2, 0.2, 15, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x000000} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(0,-7,0);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lampa.add( cylinder );
+var geometry = new THREE.SphereBufferGeometry( 3, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xefefef} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(0,0,0);
+lampa.add( sphere );
+lampa.rotation.z = Math.PI ;
+lampa.position.set(0,36,0);
+pokoj.add (lampa);		
+
+//BIURKO
+var texture = new THREE.TextureLoader().load( 'ciemny.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 2, 30, 20);
+var material = new THREE.MeshStandardMaterial( {map: texture ,roughness:0.6} );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(1,0,0);
+cube.castShadow = true;
+cube.receiveShadow = true;
+biurko.add( cube );
+
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(49,0,0);
+cube.castShadow = true;
+cube.receiveShadow = true;
+biurko.add( cube );
+
+var geometry = new THREE.BoxBufferGeometry( 50, 2, 20 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(25,15,0);
+cube.castShadow = true;
+cube.receiveShadow = true;
+biurko.add( cube );
+
+var geometry = new THREE.BoxBufferGeometry( 50, 10, 2 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(25,2,-9);
+cube.castShadow = true;
+cube.receiveShadow = true;
+biurko.add( cube );
+biurko.position.set(40,-35,-88);
+pokoj.add(biurko);				
+
+//ŁÓŻKO
+var texture = new THREE.TextureLoader().load( 'ciemny.jpg' );
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 7, 32 );
+var material = new THREE.MeshStandardMaterial( {map: texture ,roughness:0.6 } );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lozko.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(0,0,80);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lozko.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(100,0,80);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lozko.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(100,0,0);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lozko.add( cylinder );
+
+var geometry = new THREE.BoxBufferGeometry( 102, 10, 82 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(50,8.5,40);
+cube.castShadow = true;
+cube.receiveShadow = true;
+lozko.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 2, 20, 82 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(0,20,40);
+cube.castShadow = true;
+cube.receiveShadow = true;
+lozko.add(cube);
+
+var texture = new THREE.TextureLoader().load( 'posciel.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 96, 1, 76 );
+var material = new THREE.MeshStandardMaterial( { map: texture,color: 0x007700,roughness:1} );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(50,14,40);
+cube.castShadow = true;
+cube.receiveShadow = true;
+lozko.add(cube);
+
+var geometry = new THREE.CylinderGeometry( 10, 10, 38, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xffffff,roughness:1} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.rotation.x= Math.PI/2;
+cylinder.position.set(10,18,40);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+lozko.add( cylinder );
+lozko.position.set(-97,-47,17);
+lozko.castShadow = true;
+lozko.receiveShadow = true;
+pokoj.add(lozko);
+
+//DRZWI
+var texture = new THREE.TextureLoader().load( 'drzwi.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 30, 70, 1 );
+var material = new THREE.MeshStandardMaterial( {map:texture ,roughness:0.6} );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+drzwi.add(cube);
+
+var texture = new THREE.TextureLoader().load( 'ciemny.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 3, 70, 3 );
+var material = new THREE.MeshStandardMaterial( {map:texture ,roughness:0.6} );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(-16.5,0,0);
+cube.castShadow = true;
+cube.receiveShadow = true;
+drzwi.add(cube);
+
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(16.5,0,0);
+cube.castShadow = true;
+cube.receiveShadow = true;
+drzwi.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 36, 3, 3 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(0,35,0);
+drzwi.position.set(40,-15,99.5);
+drzwi.add(cube);
+
+var geometry = new THREE.SphereBufferGeometry( 2, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xaaaaaa, metalness:1.0} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(13,0,2);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+drzwi.add( sphere );
+
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(13,0,-2);
+drzwi.add( sphere );
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+pokoj.add(drzwi);
+
+//ZEGAR				
+var texture = new THREE.TextureLoader().load( 'tarcza.jpg' );
+var geometry = new THREE.CircleBufferGeometry( 10, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {map: texture ,color: 0xffffff,roughness:1,side:THREE.FrontSide} );
+var circle = new THREE.Mesh( geometry, material );
+circle.castShadow = true;
+circle.receiveShadow = true;
+circle.position.set( 0, 0, 0 );
+zegar.add( circle );
+
+var texture = new THREE.TextureLoader().load( 'chrom.jpg' );
+var geometry = new THREE.TorusBufferGeometry( 11, 1, 16, 100 );
+var material = new THREE.MeshStandardMaterial( { map:texture, color: 0x000077 , metalness:1} );
+var torus = new THREE.Mesh( geometry, material );
+torus.position.set(0,0,0);
+torus.castShadow = true;
+torus.receiveShadow = true;
+zegar.add( torus );
+			
+var geometry = new THREE.ConeGeometry( 1, 1, 64 );
+var material = new THREE.MeshStandardMaterial( {color: 0x000000, metalness:1} );
+var cone = new THREE.Mesh( geometry, material );
+cone.rotation.x = Math.PI / 2;
+cone.position.set(0, 0, 1);
+cone.castShadow = true;
+cone.receiveShadow = true;
+zegar.add(cone);
+
+var geometry = new THREE.PlaneBufferGeometry( 0.5, 6, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x880000, side: THREE.DoubleSide, metalness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.position.set(0,3,1);
+sekundy.add( plane );
+plane.castShadow = true;
+plane.receiveShadow = true;
+zegar.add(sekundy);
+
+var geometry = new THREE.PlaneBufferGeometry( 0.5, 6, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x000000, side: THREE.DoubleSide, metalness:1} );
+var plane = new THREE.Mesh( geometry, material );
+plane.position.set(0,3,1);
+plane.castShadow = true;
+plane.receiveShadow = true;
+minuty.add( plane );
+zegar.add(minuty);
+
+var geometry = new THREE.PlaneBufferGeometry( 1, 4, 32 );
+var plane = new THREE.Mesh( geometry, material );
+plane.position.set(0,2,1);
+plane.castShadow = true;
+plane.receiveShadow = true;
+godziny.add( plane );
+zegar.add(godziny);
+zegar.position.set(65,25,-99);
+pokoj.add(zegar);
+
+//SZAFA
+var texture = new THREE.TextureLoader().load( 'ciemny.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 100, 80, 30 );
+var material = new THREE.MeshStandardMaterial( {map:texture ,roughness:0.6} );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+szafa.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 49, 80, 2 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(-25,0,16);
+cube.castShadow = true;
+cube.receiveShadow = true;
+szafa.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 49, 80, 2 );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(26,0,16);
+cube.castShadow = true;
+cube.receiveShadow = true;
+szafa.add(cube);
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 7, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(45,-42,15);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+szafa.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 7, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(45,-42,-13);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+szafa.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 7, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(-45,-42,15);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+szafa.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 7, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(-45,-42,-13);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+szafa.add( cylinder );
+
+
+	var cubeGeom = new THREE.CubeGeometry(47,78,1, 1, 1, 1);
+	mirrorCubeCamera = new THREE.CubeCamera( 0.1, 500, 1024 );
+	mirrorCubeCamera.position.set(26,0,17.5);
+	// mirrorCubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
+	szafa.add( mirrorCubeCamera );
+	var mirrorCubeMaterial = new THREE.MeshBasicMaterial( { envMap: mirrorCubeCamera.renderTarget } );
+	mirrorCube = new THREE.Mesh( cubeGeom, mirrorCubeMaterial );
+	mirrorCube.position.set(26,0,17.5);
+	mirrorCubeCamera.position = mirrorCube.position;
+	szafa.add(mirrorCube);	1
+
+
+szafa.position.set(-45,-5,-83);
+scene.add(szafa);
+
+//ROŚLINA
+var geometry = new THREE.CylinderBufferGeometry( 10, 7, 15, 32 );
+var material = new THREE.MeshBasicMaterial( {color: 0x110000} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+plant.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 2, 30, 32 );
+var material = new THREE.MeshBasicMaterial( {color: 0x090000} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.position.set(0,22.5,0);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+plant.add( cylinder );
+
+var texture = new THREE.TextureLoader().load( 'leaf.jpg' );
+var geometry = new THREE.SphereBufferGeometry( 10, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {/*color: 0x004400*/map:texture,roughness:1} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(0,40,0);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+plant.add( sphere );
+
+var geometry = new THREE.SphereBufferGeometry( 5, 32, 32 );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(6,25,0);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+plant.add( sphere );
+
+var geometry = new THREE.SphereBufferGeometry( 3, 32, 32 );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(-1,17,2);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+plant.add( sphere );
+
+plant.position.set(25,-40,-80);
+pokoj.add(plant);
+
+
+//Włącznik
+var geometry = new THREE.BoxBufferGeometry( 4, 4, 1 );
+var material = new THREE.MeshStandardMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+var cube = new THREE.Mesh( geometry, material );
+cube.position.set(10,0,99.5);
+cube.castShadow = true;
+cube.receiveShadow = true;
+pokoj.add(cube);
+
+
+//AMBIENT LIGHT
+var Alight = new THREE.AmbientLight( 0x404040 );
+scene.add( Alight );
+
+
+var light = new THREE.PointLight( 0xffff55, 3, 150 ,1);
+					light.castShadow = true;
+					//pointLight.shadow.bias=-0.0001;
+					//pointLight.shadow.camera.far = 100;
+light.position.set(0,27,0);
+scene.add( light );
+
+scene.add(pokoj);				
+
+//TELEWIZOR				
+var geometry = new THREE.BoxBufferGeometry( 110, 60, 2 );
+var material = new THREE.MeshStandardMaterial( {color:0x111111 ,roughness:0.4} );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+telewizor.add(cube);
+
+
+// create the video element
+	video = document.createElement( 'video' );
+	// video.id = 'video';
+	// video.type = ' video/ogg; codecs="theora, vorbis" ';
+	video.src = "film.mp4";
+	video.load();
+	video.play();
+
+	
+	videoImage = document.createElement( 'canvas' );
+	videoImage.width =1280;
+	videoImage.height = 720;
+
+	videoImageContext = videoImage.getContext( '2d' );
+	videoImageContext.fillStyle = '#000000';
+	videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+	videoTexture = new THREE.Texture( videoImage );
+	videoTexture.minFilter = THREE.LinearFilter;
+	videoTexture.magFilter = THREE.LinearFilter;
+	
+	var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.FrontSide } );
+	var movieGeometry = new THREE.PlaneGeometry( 100, 50, 4, 4 );
+	var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+	movieScreen.position.set(0,0,1.01);
+	telewizor.add(movieScreen);
+
+telewizor.rotation.y=-Math.PI/2;
+telewizor.position.set(99,10,20);
+pokoj.add(telewizor);	
+
+
+//LAMPKA
+var geometry = new THREE.TorusBufferGeometry( 3, 1, 16, 100 );
+var material = new THREE.MeshStandardMaterial( { color: 0x001100 ,roughness:0.6} );
+var torus = new THREE.Mesh( geometry, material );
+torus.rotation.x=Math.PI/2;
+torus.castShadow = true;
+torus.receiveShadow = true;
+lampka.add( torus );
+
+function CustomSinCurve( scale ) {
+
+	THREE.Curve.call( this );
+
+	this.scale = ( scale === undefined ) ? 1 : scale;
+
+}
+
+CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+CustomSinCurve.prototype.constructor = CustomSinCurve;
+
+CustomSinCurve.prototype.getPoint = function ( t ) {
+
+	var tx = t *3- 1.5;
+	var ty = Math.sin( 2 * Math.PI * t );
+	var tz = 0;
+
+	return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+};
+
+var path = new CustomSinCurve( 4 );
+var geometry = new THREE.TubeBufferGeometry( path, 20, 1, 8, false );
+var material = new THREE.MeshStandardMaterial( { color: 0x001100 ,roughness:0.6} );
+var mesh = new THREE.Mesh( geometry, material );
+mesh.rotation.z=2;
+mesh.castShadow = true;
+mesh.receiveShadow = true;
+mesh.position.set(0,5,0);
+lampka.add( mesh );
+
+var geometry = new THREE.CylinderBufferGeometry( 1, 3,6, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x001100} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.position.set(-4,10,0);
+lampka.add( cylinder );
+
+var geometry = new THREE.SphereBufferGeometry( 2, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xefefef} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(-4,8,0);
+lampka.add( sphere );
+
+var light2 = new THREE.PointLight( 0xffff55, 2, 100 );
+light2.position.set( 81, -12, -93 );
+light2.castShadow = true;
+scene.add( light2 );
+lampka.position.set(85,-18,-93);
+pokoj.add(lampka);
+//FOTEL
+var geometry = new THREE.CylinderBufferGeometry( 1, 2,10, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x222222, roughness:0.6} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.rotation.z=Math.PI/2;
+cylinder.rotation.y=Math.PI/2;
+cylinder.position.set(0,0,5);
+fotel.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.rotation.z=Math.PI/2;
+cylinder.rotation.y=Math.PI;
+cylinder.position.set(5,0,0);
+fotel.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.rotation.z=Math.PI/2;
+cylinder.rotation.y=-Math.PI/2;
+cylinder.position.set(0,0,-5);
+fotel.add( cylinder );
+
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.rotation.z=Math.PI/2;
+cylinder.position.set(-5,0,0);
+fotel.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 2, 3, 15, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.position.set(0,7.5,0);
+fotel.add( cylinder );
+
+var geometry = new THREE.SphereBufferGeometry( 2, 32, 32 );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(10,-2,0);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+fotel.add( sphere );
+
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(-10,-2,0);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+fotel.add( sphere );
+
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(0,-2,10);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+fotel.add( sphere );
+
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set(0,-2,-10);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+fotel.add( sphere );
+
+var geometry = new THREE.CylinderBufferGeometry( 11, 10, 2, 32 );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.position.set(0,15,0);
+fotel.add( cylinder );
+
+var geometry = new THREE.CylinderBufferGeometry( 8, 9, 1, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x225533, roughness:1} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.position.set(0,16,0);
+fotel.add( cylinder );
+
+fotel.position.set(65,-47,-60);
+pokoj.add(fotel);
+
+//DYWAN
+var texture = new THREE.TextureLoader().load( 'curly.jpg' );
+var geometry = new THREE.PlaneBufferGeometry( 150, 100, 64 );
+var material = new THREE.MeshStandardMaterial( {map:texture} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.x=-Math.PI/2;
+plane.position.set(0,-49.8,0);
+plane.castShadow = true;
+plane.receiveShadow = true;
+pokoj.add( plane );
+
+//SŁONCE
+var slonce = new THREE.PointLight( 0xffffbb, 2, 1000 ,2);
+					slonce.castShadow = true;
+					//pointLight.shadow.bias=-0.0001;
+					//pointLight.shadow.camera.far = 100;
+slonce.position.set(-120,30,-20);
+sun.add( slonce );
+scene.add( sun );
+
+//OKNO
+var geometry = new THREE.PlaneBufferGeometry( 60, 40, 64 );
+var material = new THREE.MeshStandardMaterial( {color:0xffffff,transparent:true, opacity:0.3} );
+var plane = new THREE.Mesh( geometry, material );
+plane.rotation.y=Math.PI/2;
+okno.add( plane );
+
+var texture = new THREE.TextureLoader().load( 'ciemny.jpg' );
+var geometry = new THREE.BoxBufferGeometry( 3, 5, 65 );
+var material = new THREE.MeshStandardMaterial( {map:texture ,roughness:0.6} );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+cube.position.set(0,-20,0);
+okno.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 3, 5, 65 );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+cube.position.set(0,20,0);
+okno.add(cube);
+
+var geometry = new THREE.BoxBufferGeometry( 3, 40, 5);
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+cube.position.set(0,0,30);
+okno.add(cube);
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+cube.position.set(0,0,-30);
+okno.add(cube);
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.receiveShadow = true;
+cube.position.set(0,0,-10);
+okno.add(cube);
+okno.position.set(-100,10,0);
+pokoj.add(okno);
+
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap; 				
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+				document.addEventListener("keydown",onDocumentKeyDown, false);
+				window.addEventListener( 'resize', onWindowResize, false );
+			
+		animate();
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function animate() {
+			requestAnimationFrame( animate );
+				
+				var currentDate = new Date();
+				var s = currentDate.getSeconds();
+				var m = currentDate.getMinutes();
+				var g = currentDate.getHours();
+
+
+				//requestAnimationFrame( animate );
+			
+				sun.rotation.z -= 0.002;
+				sekundy.rotation.z -= s/9.5;
+				minuty.rotation.z -= m/9.5;
+				godziny.rotation.z -= g/1.9 + m/114;
+			 
+	mirrorCube.visible = false;
+	mirrorCubeCamera.updateCubeMap( renderer, scene );
+	mirrorCube.visible = true;
+
+	if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
+	{
+		videoImageContext.drawImage( video, 0, 0 );
+		if ( videoTexture ) 
+			videoTexture.needsUpdate = true;
+	}
+				camera.lookAt(scene.position);
+				//controls.update();	
+				renderer.render( scene, camera );
+				
+				sekundy.rotation.z += s/9.5;
+				minuty.rotation.z += m/9.5;
+				godziny.rotation.z += g/1.9 + m/114;
+			}
+
+function onDocumentKeyDown(event)
+ {
+	
+    let key = event.which;
+    
+    if(key == 'l'.charCodeAt(0) || key == 'L'.charCodeAt(0) && bool2 == false )
+		{
+            scene.add( light2 );
+            bool2 = true;
+		}
+    else if (key == 'l'.charCodeAt(0) || key == 'L'.charCodeAt(0) && bool2 == true )
+		{
+            scene.remove(light2);
+            bool2 = false;
+        }
+   else if ((key == 'K'.charCodeAt(0) || key == 'k'.charCodeAt(0)) && bool == false )
+		{
+            scene.add(light);
+            bool = true;
+        }
+   else if ((key == 'K'.charCodeAt(0) || key == 'k'.charCodeAt(0)) && bool == true )
+		{
+            scene.remove(light);
+            bool = false;
+        }
+
+}
+
+		</script>
+	</body>
+</html>
