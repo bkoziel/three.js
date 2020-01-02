@@ -1,0 +1,187 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 ); 
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+/*
+			var geometry = new THREE.PlaneGeometry( 10, 30, 0 );
+			var material = new THREE.MeshPhongMaterial({ color: 0x003300 , side: THREE.DoubleSide });
+			var material2 = new THREE.MeshPhongMaterial( {color: 0x222222, side: THREE.DoubleSide} );
+			var plane = new THREE.Mesh( geometry, material );
+			var plane2 = new THREE.Mesh( geometry, material2 );
+			var plane3 = new THREE.Mesh( geometry, material );
+			plane.position.set( -10, 0, 0 );
+			plane2.position.set( 0, 0, 0 );
+			plane3.position.set( 10, 0, 0 );
+			
+			var geometry2 = new THREE.BoxGeometry( 5, 20, 40);
+			var material3 = new THREE.MeshPhongMaterial( {color: 0xff5511, side: THREE.DoubleSide} );
+			var cube = new THREE.Mesh( geometry2, material3 );
+			cube.position.set(-10,0,20);
+			var cube2 = new THREE.Mesh( geometry2, material3 );
+			cube2.position.set(10,5,20);
+			var group = new THREE.Group();
+			group.add( plane );
+			group.add( plane2 );
+			group.add( plane3 );
+			group.add(cube);
+			group.add(cube2);
+			scene.add( group );
+var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
+var light2 = new THREE.PointLight( 0xeeeeee, 5, 100 );
+light2.position.set( 20, 0, 50 );
+scene.add( light2 );
+			
+			camera.position.y = -25;
+			camera.position.z = 10;
+			camera.lookAt(scene.position);
+			renderer.render( scene, camera );
+			*/
+
+var group = new THREE.Group();
+group.position.set(45,0,0);
+
+            var geometry = new THREE.SphereGeometry(10,32,32);
+            var material = new THREE.MeshBasicMaterial({ color: 0xffff00 , side: THREE.DoubleSide });
+            var sphere = new THREE.Mesh( geometry, material );
+            sphere.position.set(0,0,0);
+   
+
+            var geometry = new THREE.SphereGeometry(2,32,32);
+            var material = new THREE.MeshPhongMaterial({ color: 0xaa2200, side: THREE.DoubleSide });
+            var sphere2 = new THREE.Mesh( geometry, material );
+            sphere2.position.set(20,0,0);
+ 
+
+            var geometry = new THREE.SphereGeometry(3,32,32);
+            var material = new THREE.MeshPhongMaterial({ color: 0xffaa00 , side: THREE.DoubleSide });
+            var sphere3 = new THREE.Mesh( geometry, material );
+            sphere3.position.set(30,0,0);
+
+
+            var geometry = new THREE.SphereGeometry(5,32,32);
+            var material = new THREE.MeshPhongMaterial({ color: 0x00ff00 , side: THREE.DoubleSide });
+            var sphere4 = new THREE.Mesh( geometry, material );
+            sphere4.position.set(0,0,0);
+            group.add(sphere4);
+
+            var geometry = new THREE.SphereGeometry(1,32,32);
+            var material = new THREE.MeshPhongMaterial({ color: 0xdddddd , side: THREE.DoubleSide });
+            var sphere5 = new THREE.Mesh( geometry, material );
+            sphere5.position.set(0,7,0);
+            group.add(sphere5);
+
+
+        scene.add( group );
+
+var group2 = new THREE.Group();
+group2.add(sphere);
+group2.add(sphere2);
+scene.add( group2 );
+
+var group3 = new THREE.Group();
+group3.add(group2);
+group3.add(sphere3);
+scene.add( group3 );
+
+var group4 = new THREE.Group();
+group4.add(group3);
+group4.add(group);
+
+scene.add( group4 );
+
+            var animate = function () {
+				requestAnimationFrame( animate );
+
+
+group.rotation.z += 0.1;
+group2.rotation.y += 0.04;
+group2.rotation.y += 0.04;
+group3.rotation.y += 0.02;
+group3.rotation.y += 0.02;
+group4.rotation.y += 0.01;
+
+			 sphere.rotation.x += 0.1;
+             sphere2.rotation.z += 0.1;
+             sphere3.rotation.z += 0.2;
+			 sphere4.rotation.y += 0.4;
+             sphere5.rotation.z += 0.2;
+
+				renderer.render( scene, camera );
+			};
+            var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+            scene.add( light );
+            var light2 = new THREE.PointLight( 0xeeeeee, 5, 70 );
+            light2.position.set( 0, 0, 0 );
+            scene.add( light2 );
+            camera.position.z = 80;
+            renderer.render( scene, camera );
+            animate();
+		/*	var rotation_step = 1;
+			document.onkeydown = function( e ){
+			e = e || window.event;
+			switch (e.keyCode) {
+			case 39: //right
+			camera.position.x +=rotation_step;
+			//group.rotation.x +=rotation_step;
+			break;
+			case 37: // left
+			camera.position.x -=rotation_step;
+			//group.rotation.x -=rotation_step;
+			break;
+			case 38: // up
+			camera.position.y +=rotation_step;
+			//group.rotation.y +=rotation_step;
+			break;
+			case 40: // down
+			camera.position.y -=rotation_step;
+			//group.rotation.y -=rotation_step;
+			break;
+			case 33: // page up
+			camera.position.z +=rotation_step;
+			//group.rotation.z +=rotation_step;
+			break;
+			case 34: // page down
+			camera.position.z -=rotation_step;
+			//group.rotation.z -=rotation_step;
+			break;
+			default:
+			;
+			}
+		
+			renderer.render(scene,camera);
+			}*/
+
+
+function animate() {
+
+
+
+requestAnimationFrame( animate );
+
+
+
+render();
+
+
+
+}
+	
+			
+			
+		</script>
+	</body>
+</html>

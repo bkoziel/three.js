@@ -1,0 +1,202 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 ); 
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
+			
+			
+	var imagePrefix = "glacier_";
+	var directions  = ["rt", "lf", "bk", "ft", "up", "dn"];
+	var imageSuffix = ".png";
+	var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+	
+	var materialArray = [];
+	for (var i = 0; i < 6; i++)
+		materialArray.push( new THREE.MeshBasicMaterial({
+			map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+			side: THREE.BackSide
+		}));
+	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+	scene.add( skyBox );
+			
+			
+			var geometry = new THREE.PlaneBufferGeometry( 30, 30, 0 );
+			var material = new THREE.MeshStandardMaterial({ color: 0xffffff , side: THREE.DoubleSide });
+			var plane = new THREE.Mesh( geometry, material );
+
+			plane.position.set( 0, 0, 0 );
+			plane.receiveShadow = true;
+
+			
+var geometry = new THREE.CylinderBufferGeometry( 3, 3, 10, 64 );
+var material = new THREE.MeshStandardMaterial( {color: 0x111100} );
+var cylinder = new THREE.Mesh( geometry, material );
+cylinder.rotation.x=Math.PI/2;
+cylinder.position.set( 0, 0, 5 );
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+scene.add( cylinder );
+
+var geometry = new THREE.ConeGeometry( 8, 5, 64 );
+var material = new THREE.MeshStandardMaterial( {color: 0x00a000, roughness: 0.8, metalness: 0.3} );
+var cone = new THREE.Mesh( geometry, material );
+cone.rotation.x=Math.PI/2;
+cone.position.set( 0, 0, 10 );
+cone.castShadow = true;
+cone.receiveShadow = true;
+scene.add( cone );
+
+var geometry = new THREE.ConeGeometry( 6, 5, 64 );
+var material = new THREE.MeshStandardMaterial( {color: 0x00a500, roughness: 0.8, metalness: 0.3} );
+var cone2 = new THREE.Mesh( geometry, material );
+cone2.rotation.x=Math.PI/2;
+cone2.position.set( 0, 0, 14 );
+cone2.castShadow = true;
+cone2.receiveShadow = true;
+scene.add( cone2 );
+
+var geometry = new THREE.ConeGeometry( 4, 5, 64 );
+var material = new THREE.MeshStandardMaterial( {color: 0x00aa00, roughness: 0.8, metalness: 0.3} );
+var cone3 = new THREE.Mesh( geometry, material );
+cone3.rotation.x=Math.PI/2;
+cone3.position.set( 0, 0, 17 );
+cone3.castShadow = true;
+cone3.receiveShadow = true;
+scene.add( cone3 );
+
+var geometry = new THREE.SphereBufferGeometry( 1, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xbb0000 , roughness: 0.2, metalness: 0.8} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.position.set( 4, -1, 10);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+scene.add( sphere );
+
+
+var geometry = new THREE.SphereBufferGeometry( 1, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0xffff00 , roughness: 0.2, metalness: 0.8} );
+var sphere2 = new THREE.Mesh( geometry, material );
+sphere2.position.set( -3, -3, 10);
+sphere2.castShadow = true;
+sphere2.receiveShadow = true;
+scene.add( sphere2 );
+
+
+var geometry = new THREE.SphereBufferGeometry( 1, 32, 32 );
+var material = new THREE.MeshStandardMaterial( {color: 0x0000bb , roughness: 0.2, metalness: 0.8} );
+var sphere3 = new THREE.Mesh( geometry, material );
+sphere3.position.set( 0, -4, 13);
+sphere3.castShadow = true;
+sphere3.receiveShadow = true;
+scene.add( sphere3 );
+
+	/*		var geometry2 = new THREE.BoxBufferGeometry( 5, 20, 20);
+			var material3 = new THREE.MeshStandardMaterial( {color: 0xff5511, side: THREE.DoubleSide} );
+			var cube = new THREE.Mesh( geometry2, material3 );
+			cube.position.set(-10,0,10);
+			cube.castShadow = true; //default is false
+			cube.receiveShadow = true; //default
+			var cube2 = new THREE.Mesh( geometry2, material3 );
+			cube2.position.set(10,5,10);
+						cube2.castShadow = true; //default is false
+cube2.receiveShadow = true ;
+
+			*/
+	
+			var group = new THREE.Group();
+	
+			group.add( plane );
+			//group.add(cube);
+			//group.add(cube2);
+			
+
+			scene.add( group );
+var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
+//var light2 = new THREE.PointLight( 0xeeeeee, 5, 100 );
+//light2.position.set( 25, 0, 30 );
+//scene.add( light2 );
+
+var spotLight = new THREE.SpotLight( 0xeeeeee);
+spotLight.position.set( 35, 0, 30);
+
+spotLight.castShadow = true;
+
+spotLight.shadow.mapSize.width = 512;
+spotLight.shadow.mapSize.height = 512;
+
+spotLight.shadow.camera.near = 30;
+spotLight.shadow.camera.far = 400;
+spotLight.shadow.camera.fov = 300;
+
+scene.add( spotLight );
+
+
+
+var geometry = new THREE.SphereGeometry(2,32,32);
+var material = new THREE.MeshBasicMaterial({ color: 0xffff00 , side: THREE.DoubleSide });
+var sphere = new THREE.Mesh( geometry, material );
+           sphere.position.set(35,0,30);
+			scene.add( sphere );
+			
+			camera.position.y = -25;
+			camera.position.z = 20;
+			camera.lookAt(scene.position);
+			renderer.render( scene, camera );
+			
+			var rotation_step = 1;
+			document.onkeydown = function( e ){
+			e = e || window.event;
+			switch (e.keyCode) {
+			case 39: //right
+			camera.position.x +=rotation_step;
+			//group.rotation.x +=rotation_step;
+			break;
+			case 37: // left
+			camera.position.x -=rotation_step;
+			//group.rotation.x -=rotation_step;
+			break;
+			case 38: // up
+			camera.position.y +=rotation_step;
+			//group.rotation.y +=rotation_step;
+			break;
+			case 40: // down
+			camera.position.y -=rotation_step;
+			//group.rotation.y -=rotation_step;
+			break;
+			case 33: // page up
+			camera.position.z +=rotation_step;
+			//group.rotation.z +=rotation_step;
+			break;
+			case 34: // page down
+			camera.position.z -=rotation_step;
+			//group.rotation.z -=rotation_step;
+			break;
+			default:
+			;
+			}
+		
+			renderer.render(scene,camera);
+			}
+
+	
+			
+			
+		</script>
+	</body>
+</html>
